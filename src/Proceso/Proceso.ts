@@ -3,7 +3,7 @@ export class Proceso{
     private _tamanoMemoria: number;
     private _tiempoCpuTotal: number;
     private _tiempoCpuRestante: number;
-    private _estado: string;
+    private _estado: EstadoProceso;
     private _quantumConsumido: number;
     private _tiempoBloqueRestante:number;
 
@@ -12,7 +12,7 @@ export class Proceso{
         this._tamanoMemoria = tamanoMemoria;
         this._tiempoCpuTotal = tiempoCpuTotal;
         this._tiempoCpuRestante = tiempoCpuTotal;
-        this._estado = "Nuevo";
+        this._estado = EstadoProceso.NUEVO;
         this._quantumConsumido = 0;
         this._tiempoBloqueRestante = 0;
 
@@ -34,16 +34,8 @@ export class Proceso{
         return this._tiempoCpuRestante;
     }
 
-    set tiempoCpuRestante(valor: number){
-        this._tiempoCpuRestante;
-    }
-
-    get estado(): string{
+    get estado(): EstadoProceso{
         return this._estado;
-    }
-
-    set estado(valor:string){
-        this._estado = valor;
     }
     
     get quantumConsumido(): number{
