@@ -14,7 +14,7 @@ export class Proceso{
         this._tiempoCpuRestante = tiempoCpuTotal;
         this._estado = "Nuevo";
         this._quantumConsumido = 0;
-        this._tiempoBloqueRestante =0;
+        this._tiempoBloqueRestante = 0;
 
     }
 
@@ -30,8 +30,20 @@ export class Proceso{
         return this._tiempoCpuTotal;
     }
 
+    get tiempoCpuRestante():number{
+        return this._tiempoCpuRestante;
+    }
+
+    set tiempoCpuRestante(valor: number){
+        this._tiempoCpuRestante;
+    }
+
     get estado(): string{
         return this._estado;
+    }
+
+    set estado(valor:string){
+        this._estado = valor;
     }
     
     get quantumConsumido(): number{
