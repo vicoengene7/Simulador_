@@ -1,4 +1,8 @@
-export class BloqueMemoria {
+import {IBloqueMemoria} from "./IBloqueMemoria";
+
+// Representa un bloque contiguo de memoria.
+
+export class BloqueMemoria implements IBloqueMemoria {
     private _inicio: number;
     private _tamano: number;
     private _libre: boolean;
@@ -26,4 +30,13 @@ export class BloqueMemoria {
     get pid(): string | null {
         return this._pid;
     }
+
+    ocupar(pid: string): void{
+        this._libre = false;
+        this._pid = pid;
+    }
+    // Cambia el estado del bloque de libre a ocupado y registra
+    // el PID del proceso al que se le asignó la memoria.
+
+
 }

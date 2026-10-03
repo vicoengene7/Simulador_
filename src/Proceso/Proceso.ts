@@ -1,5 +1,5 @@
-import {EstadoProceso} from "./EstadoProceso";
 import { IProceso } from "./IProceso";
+import { EstadoProceso } from "./EstadoProceso";
 
 export class Proceso implements IProceso {
     private _pid: string;
