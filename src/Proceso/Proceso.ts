@@ -29,6 +29,10 @@ export class Proceso implements IProceso {
     this.setQuantumConsumido(nuevoQuantum);
     }
 
+    estaTerminado(): boolean {
+        return this._tiempoCpuRestante === 0;
+    }
+
     get pid(): string{
         return this._pid;
     }

@@ -4,7 +4,7 @@ import { EstadoProceso } from "../src/Proceso/EstadoProceso";
 
 describe("Proceso", () => {
 
-    test("RF02 - debe almacenar los datos iniciales del proceso", () => {
+    test("RF02: debe almacenar los datos iniciales del proceso", () => {
         const proceso = new Proceso("P1", 200, 4);
 
         expect(proceso.pid).toBe("P1");
@@ -15,7 +15,7 @@ describe("Proceso", () => {
         expect(proceso.tiempoBloqueoRestante).toBe(0);
     });
 
-    test("RF03 - debe iniciar el proceso en estado NUEVO", () => {
+    test("RF03: debe iniciar el proceso en estado NUEVO", () => {
         const proceso = new Proceso("P1", 200, 4);
 
         expect(proceso.estado).toBe(EstadoProceso.NUEVO);
@@ -28,6 +28,15 @@ describe("Proceso", () => {
 
     expect(proceso.tiempoCpuRestante).toBe(3);
     expect(proceso.quantumConsumido).toBe(1);
-});
 
+    });
+
+    test("debe indicar que terminó cuando no le queda tiempo de CPU", () => {
+    const proceso = new Proceso("P1", 200, 2);
+
+    proceso.ejecutarUnTick();
+    proceso.ejecutarUnTick();
+
+    expect(proceso.estaTerminado()).toBe(true);
+    });
 });
