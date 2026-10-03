@@ -12,7 +12,7 @@ describe("Proceso", () => {
         expect(proceso.tiempoCpuTotal).toBe(4);
         expect(proceso.tiempoCpuRestante).toBe(4);
         expect(proceso.quantumConsumido).toBe(0);
-        expect(proceso.tiempoBloqueRestante).toBe(0);
+        expect(proceso.tiempoBloqueoRestante).toBe(0);
     });
 
     test("RF03 - debe iniciar el proceso en estado NUEVO", () => {
@@ -20,5 +20,14 @@ describe("Proceso", () => {
 
         expect(proceso.estado).toBe(EstadoProceso.NUEVO);
     });
+
+    test("debe actualizar el tiempo de CPU restante y el quantum al ejecutar un tick", () => {
+    const proceso = new Proceso("P1", 200, 4);
+
+    proceso.ejecutarUnTick();
+
+    expect(proceso.tiempoCpuRestante).toBe(3);
+    expect(proceso.quantumConsumido).toBe(1);
+});
 
 });

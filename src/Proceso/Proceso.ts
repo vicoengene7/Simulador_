@@ -1,7 +1,6 @@
 import { EstadoProceso } from "./EstadoProceso";
 import { IProceso } from "./IProceso";
 
-
 export class Proceso implements IProceso {
     private readonly _pid: string;
     private readonly _tamanoMemoria: number;
@@ -20,6 +19,14 @@ export class Proceso implements IProceso {
         this._quantumConsumido = 0;
         this._tiempoBloqueoRestante = 0;
 
+    }
+    
+    ejecutarUnTick(): void {
+    const nuevoTiempoCpu = this._tiempoCpuRestante - 1;
+    const nuevoQuantum = this._quantumConsumido + 1;
+
+    this.setTiempoCpuRestante(nuevoTiempoCpu);
+    this.setQuantumConsumido(nuevoQuantum);
     }
 
     get pid(): string{
@@ -66,5 +73,6 @@ export class Proceso implements IProceso {
     protected setTiempoBloqueoRestante(valor: number): void {
         this._tiempoBloqueoRestante = valor;
     }
+
 
 }
