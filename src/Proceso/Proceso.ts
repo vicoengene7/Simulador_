@@ -1,7 +1,6 @@
-import { IProceso } from "./IProceso";
 import { EstadoProceso } from "./EstadoProceso";
 
-export class Proceso implements IProceso {
+export class Proceso {
     private _pid: string;
     private _tamanoMemoria: number;
     private _tiempoCpuTotal: number;
