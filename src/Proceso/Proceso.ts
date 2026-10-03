@@ -1,13 +1,15 @@
 import { EstadoProceso } from "./EstadoProceso";
+import { IProceso } from "./IProceso";
 
-export class Proceso {
-    private _pid: string;
-    private _tamanoMemoria: number;
-    private _tiempoCpuTotal: number;
+
+export class Proceso implements IProceso {
+    private readonly _pid: string;
+    private readonly _tamanoMemoria: number;
+    private readonly _tiempoCpuTotal: number;
     private _tiempoCpuRestante: number;
     private _estado: EstadoProceso;
     private _quantumConsumido: number;
-    private _tiempoBloqueRestante:number;
+    private _tiempoBloqueoRestante:number;
 
     constructor(pid: string, tamanoMemoria: number, tiempoCpuTotal: number ){
         this._pid = pid;
@@ -16,7 +18,7 @@ export class Proceso {
         this._tiempoCpuRestante = tiempoCpuTotal;
         this._estado = EstadoProceso.NUEVO;
         this._quantumConsumido = 0;
-        this._tiempoBloqueRestante = 0;
+        this._tiempoBloqueoRestante = 0;
 
     }
 
@@ -36,17 +38,33 @@ export class Proceso {
         return this._tiempoCpuRestante;
     }
 
+    protected setTiempoCpuRestante(valor: number): void {
+    this._tiempoCpuRestante = valor;
+    }
+
     get estado(): EstadoProceso{
         return this._estado;
     }
+
+    protected setEstado(valor: EstadoProceso): void {
+        this._estado = valor;
+    }
+
     
     get quantumConsumido(): number{
         return this._quantumConsumido
     }
 
-    get tiempoBloqueRestante(): number{
-        return this._tiempoBloqueRestante;
+    protected setQuantumConsumido(valor: number): void {
+        this._quantumConsumido = valor;
     }
 
+    get tiempoBloqueoRestante(): number{
+        return this._tiempoBloqueoRestante;
+    }
+
+    protected setTiempoBloqueoRestante(valor: number): void {
+        this._tiempoBloqueoRestante = valor;
+    }
 
 }
