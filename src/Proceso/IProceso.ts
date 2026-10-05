@@ -11,4 +11,5 @@ export interface IProceso {
     avanzarBloqueo(): void;
     desbloquear(): void;
     terminar(): void;
+    reiniciarQuantum(): void;
 }
