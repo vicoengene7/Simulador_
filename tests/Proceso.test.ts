@@ -46,6 +46,23 @@ describe("Proceso", () => {
      expect(proceso.estaTerminado()).toBe(false);
     });
 
+    test("RF03: recorre los estados NUEVO, ESPERANDO_MEMORIA, LISTO, EJECUTANDO y TERMINADO", () => {
+        const proceso = new Proceso("P1", 200, 1);
+
+        proceso.esperarMemoria();
+        expect(proceso.estado).toBe(EstadoProceso.ESPERANDO_MEMORIA);
+
+        proceso.asignarMemoria();
+        expect(proceso.estado).toBe(EstadoProceso.LISTO);
+
+        proceso.ejecutar();
+        expect(proceso.estado).toBe(EstadoProceso.EJECUTANDO);
+
+        proceso.ejecutarUnTick();
+        proceso.terminar();
+        expect(proceso.estado).toBe(EstadoProceso.TERMINADO);
+    });
+
 
 
 });

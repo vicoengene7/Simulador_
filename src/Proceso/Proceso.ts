@@ -11,6 +11,16 @@ export class Proceso implements IProceso {
     private _tiempoBloqueoRestante:number;
 
     constructor(pid: string, tamanoMemoria: number, tiempoCpuTotal: number ){
+        const rechazar = (mensaje: string): never => {
+            throw new Error(mensaje);
+        };
+        
+        (!Number.isInteger(tamanoMemoria) || tamanoMemoria <= 0) &&
+        rechazar("El tamaño de memoria debe ser un entero positivo");
+    
+        (!Number.isInteger(tiempoCpuTotal) || tiempoCpuTotal <= 0) &&
+        rechazar("El tiempo de CPU debe ser un entero positivo");
+       
         this._pid = pid;
         this._tamanoMemoria = tamanoMemoria;
         this._tiempoCpuTotal = tiempoCpuTotal;
@@ -30,6 +40,33 @@ export class Proceso implements IProceso {
 
     estaTerminado(): boolean {
         return this._tiempoCpuRestante === 0;
+    }
+
+    //de estado nuevo pasa a esperando memoria cuando el simulador lo admite y le busca memoria
+    esperarMemoria(): void {
+        this.setEstado(EstadoProceso.ESPERANDO_MEMORIA);
+    }
+
+    // de esperando memoria pasa a listo cuando se le asigna un bloque de memoria
+    asignarMemoria(): void {
+        this.setEstado(EstadoProceso.LISTO);
+    }
+
+    // pasa de listo a ejecutando
+    ejecutar(): void {
+        this.setEstado(EstadoProceso.EJECUTANDO);
+    }
+
+    //de ejecutando pasa a listo si agotó su quantum y 
+    //otro proceso espera el cambio de contexto.
+    volverAListo(): void {
+        this.setEstado(EstadoProceso.LISTO);
+        this.setQuantumConsumido(0);
+    }
+
+    // de ejecutando pasa a terminado
+    terminar(): void {
+        this.setEstado(EstadoProceso.TERMINADO);
     }
 
 
