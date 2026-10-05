@@ -74,6 +74,10 @@ export class Proceso implements IProceso {
         this.setEstado(EstadoProceso.TERMINADO);
     }
 
+    reiniciarQuantum(): void {
+        this.setQuantumConsumido(0);
+    }
+
     programarES(despuesDeTicksCpu: number, duracion: number): void {
     const valido = Number.isInteger(despuesDeTicksCpu)
         && Number.isInteger(duracion)
