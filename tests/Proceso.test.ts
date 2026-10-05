@@ -46,7 +46,7 @@ describe("Proceso", () => {
      expect(proceso.estaTerminado()).toBe(false);
     });
 
-    test("RF03: recorre los estados NUEVO, ESPERANDO_MEMORIA, LISTO, EJECUTANDO y TERMINADO", () => {
+    test("recorre los estados NUEVO, ESPERANDO_MEMORIA, LISTO, EJECUTANDO y TERMINADO", () => {
         const proceso = new Proceso("P1", 200, 1);
 
         proceso.esperarMemoria();
@@ -63,6 +63,59 @@ describe("Proceso", () => {
         expect(proceso.estado).toBe(EstadoProceso.TERMINADO);
     });
 
+    test("al volver a listo por quantum agotado reinicia el quantum consumido", () => {
+        const proceso = new Proceso("P1", 200, 4);
+        proceso.ejecutar();
+        proceso.ejecutarUnTick();
 
+        proceso.volverAListo();
+
+        expect(proceso.estado).toBe(EstadoProceso.LISTO);
+        expect(proceso.quantumConsumido).toBe(0);
+    });
+
+        test("un proceso sin E/S programada nunca debe bloquearse", () => {
+        const proceso = new Proceso("P1", 200, 4);
+
+        proceso.ejecutarUnTick();
+        proceso.ejecutarUnTick();
+
+        expect(proceso.debeBloquearse()).toBe(false);
+    });
+
+    test("se bloquea al consumir la CPU programada y vuelve a LISTO al terminar la E/S", () => {
+        const proceso = new Proceso("P1", 200, 4);
+        proceso.programarES(2, 3);
+
+        proceso.ejecutarUnTick();
+        expect(proceso.debeBloquearse()).toBe(false);
+
+        proceso.ejecutarUnTick();
+        expect(proceso.debeBloquearse()).toBe(true);
+
+        proceso.bloquear();
+        expect(proceso.estado).toBe(EstadoProceso.BLOQUEADO);
+        expect(proceso.tiempoBloqueoRestante).toBe(3);
+        expect(proceso.quantumConsumido).toBe(0);
+
+        proceso.avanzarBloqueo();
+        proceso.avanzarBloqueo();
+        proceso.avanzarBloqueo();
+        expect(proceso.tiempoBloqueoRestante).toBe(0);
+
+        proceso.desbloquear();
+        expect(proceso.estado).toBe(EstadoProceso.LISTO);
+    });
+
+    test("la E/S se consume una sola vez", () => {
+        const proceso = new Proceso("P1", 200, 4);
+        proceso.programarES(1, 2);
+        proceso.ejecutarUnTick();
+        proceso.bloquear();
+
+        expect(proceso.debeBloquearse()).toBe(false);
+    });
+
+    
 
 });

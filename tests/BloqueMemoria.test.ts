@@ -21,6 +21,23 @@ describe("BloqueMemoria", () => {
         expect(bloque.pid).toBe("P1");
     });
 
+    test("debe volver a quedar libre y sin PID al liberarlo", () => {
+        const bloque = new BloqueMemoria(0, 1000);
+        bloque.ocupar("P1");
+
+        bloque.liberar();
+
+        expect(bloque.libre).toBe(true);
+        expect(bloque.pid).toBe(null);
+    });
+
+    test("debe describirse con el PID cuando está ocupado", () => {
+        const bloque = new BloqueMemoria(0, 200);
+        bloque.ocupar("P1");
+
+        expect(bloque.describir()).toBe("[0-200 KB] P1");
+    });
+
 
 
 });

@@ -10,6 +10,9 @@ export class Proceso implements IProceso {
     private _quantumConsumido: number;
     private _tiempoBloqueoRestante:number;
 
+    private _esDespuesDeTicksCpu: number | null;
+    private _esDuracion: number;
+
     constructor(pid: string, tamanoMemoria: number, tiempoCpuTotal: number ){
         const rechazar = (mensaje: string): never => {
             throw new Error(mensaje);
@@ -28,6 +31,8 @@ export class Proceso implements IProceso {
         this._estado = EstadoProceso.NUEVO;
         this._quantumConsumido = 0;
         this._tiempoBloqueoRestante = 0;
+        this._esDespuesDeTicksCpu = null;
+        this._esDuracion = 0;
     }
     
     ejecutarUnTick(): void {
@@ -69,6 +74,50 @@ export class Proceso implements IProceso {
         this.setEstado(EstadoProceso.TERMINADO);
     }
 
+    programarES(despuesDeTicksCpu: number, duracion: number): void {
+    const valido = Number.isInteger(despuesDeTicksCpu)
+        && Number.isInteger(duracion)
+        && despuesDeTicksCpu > 0
+        && despuesDeTicksCpu < this._tiempoCpuTotal
+        && duracion > 0;
+
+    valido? this.guardarES(despuesDeTicksCpu, duracion): this.lanzarErrorES();
+    }
+
+    private guardarES(despuesDeTicksCpu: number, duracion: number): void {
+    this._esDespuesDeTicksCpu = despuesDeTicksCpu;
+    this._esDuracion = duracion;
+    }
+
+    private lanzarErrorES(): never {
+    throw new Error(
+        "La E/S debe ocurrir después de al menos 1 tick de CPU, antes de terminar, y durar al menos 1 tick"
+    );
+    }
+
+    debeBloquearse(): boolean {
+        const cpuConsumida = this._tiempoCpuTotal - this._tiempoCpuRestante;
+
+        return this._esDespuesDeTicksCpu !== null && cpuConsumida === this._esDespuesDeTicksCpu;
+    }
+
+    // pasa de ejecutando a bloqueado
+    bloquear(): void {
+        this.setEstado(EstadoProceso.BLOQUEADO);
+        this.setTiempoBloqueoRestante(this._esDuracion);
+        this.setQuantumConsumido(0);
+        this._esDespuesDeTicksCpu = null;
+    }
+
+    // Pasa un tick de espera de E/S.
+    avanzarBloqueo(): void {
+        this.setTiempoBloqueoRestante(this._tiempoBloqueoRestante - 1);
+    }
+
+    // bloqueado a listo porque sus ticks de E/S terminaron
+    desbloquear(): void {
+        this.setEstado(EstadoProceso.LISTO);
+    }
 
     get pid(): string{
         return this._pid;

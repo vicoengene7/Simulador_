@@ -3,7 +3,7 @@ import {IBloqueMemoria} from "./IBloqueMemoria";
 // Representa un bloque contiguo de memoria.
 
 export class BloqueMemoria implements IBloqueMemoria {
-    private _inicio: number;
+    private readonly _inicio: number;
     private _tamano: number;
     private _libre: boolean;
     private _pid: string | null;
@@ -23,6 +23,10 @@ export class BloqueMemoria implements IBloqueMemoria {
         return this._tamano;
     }
 
+    protected setTamano(valor: number): void {
+    this._tamano = valor;
+    }
+
     get libre(): boolean {
         return this._libre;
     }
@@ -31,12 +35,19 @@ export class BloqueMemoria implements IBloqueMemoria {
         return this._pid;
     }
 
+    // Cambia el estado del bloque de libre a ocupado y registra
+    // el PID del proceso al que se le asignó la memoria.
+
     ocupar(pid: string): void{
         this._libre = false;
         this._pid = pid;
     }
-    // Cambia el estado del bloque de libre a ocupado y registra
-    // el PID del proceso al que se le asignó la memoria.
+
+    liberar(): void {
+        this._libre = true;
+        this._pid = null;
+    }
+
 
 
 }
