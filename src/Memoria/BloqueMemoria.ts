@@ -48,6 +48,14 @@ export class BloqueMemoria implements IBloqueMemoria {
         this._pid = null;
     }
 
+    describir(): string {
+    const pid = this._libre ? "LIBRE" : this._pid;
+    
+    return `[${this._inicio}-${this._inicio + this._tamano} KB] ${pid}`;
+    }
+
+    
+
 
 
 }

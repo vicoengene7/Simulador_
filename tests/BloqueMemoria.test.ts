@@ -39,5 +39,11 @@ describe("BloqueMemoria", () => {
     });
 
 
+    test("debe describirse como libre cuando no tiene PID", () => {
+        const bloque = new BloqueMemoria(200, 824);
+
+        expect(bloque.describir()).toBe("[200-1024 KB] LIBRE");
+    });
+
 
 });
