@@ -21,4 +21,6 @@ describe("BloqueMemoria", () => {
         expect(bloque.pid).toBe("P1");
     });
 
+
+
 });

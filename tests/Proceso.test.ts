@@ -39,4 +39,13 @@ describe("Proceso", () => {
 
     expect(proceso.estaTerminado()).toBe(true);
     });
+    
+    test("no está terminado si todavía le queda tiempo de CPU", () => {
+     const proceso = new Proceso("P1", 200, 2);
+     proceso.ejecutarUnTick();
+     expect(proceso.estaTerminado()).toBe(false);
+    });
+
+
+
 });

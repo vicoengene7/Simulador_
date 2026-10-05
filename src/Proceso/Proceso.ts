@@ -18,7 +18,6 @@ export class Proceso implements IProceso {
         this._estado = EstadoProceso.NUEVO;
         this._quantumConsumido = 0;
         this._tiempoBloqueoRestante = 0;
-
     }
     
     ejecutarUnTick(): void {
@@ -32,6 +31,7 @@ export class Proceso implements IProceso {
     estaTerminado(): boolean {
         return this._tiempoCpuRestante === 0;
     }
+
 
     get pid(): string{
         return this._pid;
