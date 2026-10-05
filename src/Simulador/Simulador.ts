@@ -8,6 +8,7 @@ import { FirstFit } from "../PoliticasAsignacion/FirstFit";
 import { Proceso } from "../Proceso/Proceso";
 import { EstadisticasCpu } from "../Estadisticas/EstadisticasCpu";
 import { IEstadisticasCpu } from "../Estadisticas/IEstadisticasCpu";
+import { IMetricas } from "../Memoria/IMetricas";
 import { ISimulador } from "./ISimulador";
 
 // Simulación DISCRETA: avanza por ticks y en cada uno repite los mismos pasos, en el mismo orden:
@@ -136,7 +137,7 @@ export class Simulador implements ISimulador {
     }
 
     private registrarTerminado(proceso: Proceso): void {
-        this._memoria.liberar(proceso.pid);
+        (this._memoria as AdministradorMemoria).liberar(proceso.pid);
         this._terminados.push(proceso);
     }
 
