@@ -45,5 +45,4 @@ describe("BloqueMemoria", () => {
         expect(bloque.describir()).toBe("[200-1024 KB] LIBRE");
     });
 
-
 });

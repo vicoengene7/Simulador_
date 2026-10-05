@@ -21,4 +21,6 @@ describe("FirstFit", () => {
         expect(bloqueEncontrado).toBe(bloque2);
     });
 
+    
+
 });
