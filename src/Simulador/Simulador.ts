@@ -90,7 +90,10 @@ export class Simulador implements ISimulador {
         const siguenEsperando: Proceso[] = [];
 
         for (const proceso of this._esperandoMemoria) {
-            const memoriaAsignada = this._memoria.asignar(proceso.pid, proceso.tamanoMemoria);
+            const memoriaAsignada = (this._memoria as AdministradorMemoria).asignar(
+                proceso.pid,
+                proceso.tamanoMemoria
+            );
 
             memoriaAsignada ? this.enviarAListos(proceso) : siguenEsperando.push(proceso);
         }
